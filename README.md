@@ -33,6 +33,8 @@ Clone the repo, create Python virtual environment, install Python requirements, 
 
 Environment variables may break things; running locally is untested.
 
+On Windows, run `mysqld` to start the database server and `mysqladmin -u root shutdown` to stop it.
+
 ## Troubleshooting
 
 * On Docker run, "Bind for 0.0.0.0:3306 failed: port is already allocated" - stop existing Docker container
