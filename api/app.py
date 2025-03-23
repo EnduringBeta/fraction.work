@@ -38,6 +38,7 @@ def _get_init_player_data():
         response = requests.get(INIT_PLAYERS_URL)
         response.raise_for_status()
         data = response.json()
+        return data
     except Exception as e:
         print(f"Error getting initial player data: {e}")
         raise e
@@ -87,16 +88,11 @@ def _initialize_db(supply_init_data = False):
                 # Get players data
                 players = _get_init_player_data()
 
-                print("HEY ROSS")
-
                 if not players:
                     print(f"Error getting initial player data!")
                     conn.commit()
                     conn.close()
                     return
-
-                print("HEY ROSS 2")
-                print(str(players[0]))
 
                 query_add_players = f"INSERT INTO {table_players} \
                 (player_name, position, games, at_bat, runs, hits, \
