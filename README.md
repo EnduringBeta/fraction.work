@@ -44,6 +44,8 @@ On Windows, run `mysqld` to start the database server and `mysqladmin -u root sh
 
 * `SELECT user FROM mysql.user;`
 * `SHOW DATABASES;`
+* `USE mydatabase;`
+* `SHOW TABLES;`
 
 ## TODO
 
