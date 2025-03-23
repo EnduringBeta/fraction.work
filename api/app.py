@@ -87,6 +87,12 @@ def _initialize_db(supply_init_data = False):
                 # Get players data
                 players = _get_init_player_data()
 
+                if not players:
+                    print(f"Error getting initial player data!")
+                    conn.commit()
+                    conn.close()
+                    return
+
                 query_add_players = f"INSERT INTO {table_players} \
                 (player_name, position, games, at_bat, runs, hits, \
                 doubles, triples, home_runs, rbi, walks, strikeouts, \
@@ -112,7 +118,7 @@ def _initialize_db(supply_init_data = False):
                     player['On-base Percentage'],
                     player['Slugging Percentage'],
                     player['On-base Plus Slugging'],
-                    ) for player in players]
+                ) for player in players]
                 cursor.executemany(query_add_players, players_data)
                 print('Added initial players!')
 
