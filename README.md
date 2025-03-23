@@ -36,6 +36,7 @@ Environment variables may break things; running locally is untested.
 ## Troubleshooting
 
 * On Docker run, "Bind for 0.0.0.0:3306 failed: port is already allocated" - stop existing Docker container
+* "run-app.sh: Permission denied" - `git update-index --chmod=+x run-app.sh`
 
 ## Tips
 
