@@ -61,7 +61,19 @@ def _initialize_db(supply_init_data = False):
             games INT NOT NULL,
             at_bat INT NOT NULL,
             runs INT NOT NULL,
-            hits INT NOT NULL
+            hits INT NOT NULL,
+            doubles INT NOT NULL,
+            triples INT NOT NULL,
+            home_runs INT NOT NULL,
+            rbi INT NOT NULL,
+            walks INT NOT NULL,
+            strikeouts INT NOT NULL,
+            stolen_bases INT NOT NULL,
+            caught_stealing INT NOT NULL,
+            batting_average FLOAT NOT NULL,
+            on_base_percent FLOAT NOT NULL,
+            slugging_percent FLOAT NOT NULL,
+            on_base_plus_slugging FLOAT NOT NULL
         )"""
         cursor.execute(query_players)
 
@@ -76,15 +88,31 @@ def _initialize_db(supply_init_data = False):
                 players = _get_init_player_data()
 
                 query_add_players = f"INSERT INTO {table_players} \
-                (player_name, position, games, at_bat, runs, hits) \
-                VALUES (%s, %s, %s, %s, %s, %s)"
+                (player_name, position, games, at_bat, runs, hits, \
+                doubles, triples, home_runs, rbi, walks, strikeouts, \
+                stolen_bases, caught_stealing, batting_average, \
+                on_base_percent, slugging_percent, on_base_plus_slugging) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 players_data = [(
                     player['Player name'],
                     player['position'],
                     player['Games'],
                     player['At-bat'],
                     player['Runs'],
-                    player['Hits']) for player in init_players]
+                    player['Hits'],
+                    player['Double (2B)'],
+                    player['third baseman'],
+                    player['home run'],
+                    player['run batted in'],
+                    player['a walk'],
+                    player['Strikeouts'],
+                    player['stolen base'],
+                    player['Caught stealing'],
+                    player['AVG'],
+                    player['On-base Percentage'],
+                    player['Slugging Percentage'],
+                    player['On-base Plus Slugging'],
+                    ) for player in players]
                 cursor.executemany(query_add_players, players_data)
                 print('Added initial players!')
 
