@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting Scratch Web App..."
+echo "Starting fraction.work web app..."
 
 # Assuming in proper working directory
 
@@ -20,4 +20,4 @@ flask run --host=0.0.0.0 --port=5000 &
 # Run the UI!
 cd $REPO_DIR/ui/ && npm start
 
-echo "Ending Scratch Web App..."
+echo "Ending fraction.work web app..."

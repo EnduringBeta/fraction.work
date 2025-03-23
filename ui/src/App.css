@@ -37,7 +37,7 @@
   }
 }
 
-.Animals {
+.Players {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

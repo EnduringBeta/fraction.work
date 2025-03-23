@@ -3,23 +3,23 @@ import './App.css';
 
 import React, { useState, useEffect } from "react";
 
-function Card({ animal }) {
+function Card({ player }) {
   return (
-    <div id="animal-{animal.id}" className="Card">
+    <div id="player-{player.id}" className="Card">
       <div className="Container">
-        <h2>{animal.name}</h2>
-        <h3>{animal.type}</h3>
+        <h2>{player.name}</h2>
+        <h3>{player.type}</h3>
       </div>
     </div>
   );
 }
 
 function App() {
-  const [animals, setAnimals] = useState([]);
+  const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    fetch("/animals").then((res) => res.json()).then((data) => {
-        setAnimals(data);
+    fetch("/players").then((res) => res.json()).then((data) => {
+        setPlayers(data);
       });
   }, []);
 
@@ -27,10 +27,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h1>Scratch Web App - Animals</h1>
-        <div className="Animals">
-          {animals.map((item, index) =>
-            <Card key={index} animal={item} />
+        <h1>Fraction.Work - Players</h1>
+        <div className="Players">
+          {players.map((item, index) =>
+            <Card key={index} player={item} />
           )}
         </div>
       </header>
