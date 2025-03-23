@@ -5,6 +5,7 @@ Use via `python3 app.py` or `flask run`
 """
 
 import os
+import requests
 import mysql.connector
 from flask import Flask, request, jsonify
 

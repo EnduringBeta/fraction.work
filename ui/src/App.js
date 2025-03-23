@@ -7,8 +7,9 @@ function Card({ player }) {
   return (
     <div id="player-{player.id}" className="Card">
       <div className="Container">
-        <h2>{player.name}</h2>
-        <h3>{player.type}</h3>
+        <h2>{player.player_name}</h2>
+        <h3>{player.position}</h3>
+        <h3>{player.games}</h3>
       </div>
     </div>
   );
