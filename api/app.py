@@ -24,17 +24,22 @@ db_config = {
     'database': MYSQL_DATABASE
 }
 
+INIT_PLAYERS_URL="https://api.hirefraction.com/api/test/baseball"
+
 SUPPLY_INIT_DATA=True
 
 def get_db_connection():
     connection = mysql.connector.connect(**db_config)
     return connection
 
-# TODOROSS
-init_players = [
-    {"name": "Lexi", "type": "hamster"},
-    {"name": "Lorelei", "type": "hamster"},
-]
+def _get_init_player_data():
+    try:
+        response = requests.get(INIT_PLAYERS_URL)
+        response.raise_for_status()
+        data = response.json()
+    except Exception as e:
+        print(f"Error getting initial player data: {e}")
+        raise e
 
 def _initialize_db(supply_init_data = False):
     try:
@@ -50,8 +55,12 @@ def _initialize_db(supply_init_data = False):
         # Create players table if it doesn't exist
         query_players = f"""CREATE TABLE IF NOT EXISTS {table_players} (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            type VARCHAR(255) NOT NULL
+            player_name VARCHAR(255) NOT NULL,
+            position VARCHAR(255) NOT NULL,
+            games INT NOT NULL,
+            at_bat INT NOT NULL,
+            runs INT NOT NULL,
+            hits INT NOT NULL
         )"""
         cursor.execute(query_players)
 
@@ -62,8 +71,19 @@ def _initialize_db(supply_init_data = False):
 
             # Only insert data during init if no data present
             if result[0] == 0:
-                query_add_players = f"INSERT INTO {table_players} (name, type) VALUES (%s, %s)"
-                players_data = [(player['name'], player['type']) for player in init_players]
+                # Get players data
+                players = _get_init_player_data()
+
+                query_add_players = f"INSERT INTO {table_players} \
+                (player_name, position, games, at_bat, runs, hits) \
+                VALUES (%s, %s, %s, %s, %s, %s)"
+                players_data = [(
+                    player['Player name'],
+                    player['position'],
+                    player['Games'],
+                    player['At-bat'],
+                    player['Runs'],
+                    player['Hits']) for player in init_players]
                 cursor.executemany(query_add_players, players_data)
                 print('Added initial players!')
 
