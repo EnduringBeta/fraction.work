@@ -233,7 +233,13 @@ def get_players():
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        query = f"SELECT * FROM {table_players}"
+        # TODO: this ordering was requested live but not completed; this math
+        # is replicated on the front-end and can be DRYed
+        query = f"""
+        SELECT *, hits / NULLIF(games, 0) AS hits_per_game
+        FROM {table_players}
+        ORDER BY hits_per_game DESC
+        """
         cursor.execute(query)
         players = cursor.fetchall()
         conn.close()
@@ -427,10 +433,7 @@ def get_description(player_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        query = f"""
-            SELECT player_name, games, batting_average, rbi, slugging_percent, position
-            FROM {table_players} WHERE id = %s
-        """
+        query = f"SELECT * FROM {table_players} WHERE id = %s"
         cursor.execute(query, (player_id,))
         player = cursor.fetchone()
         conn.close()

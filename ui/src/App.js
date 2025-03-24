@@ -78,6 +78,7 @@ function Card({ player, onDetail, onEdit }) {
     onEdit(player);
   };
 
+  // TODO: Hits Per Game was a live addition; perhaps do that math elsewhere or store in DB
   return (
     <div id={`player-${player.id}`} className="Card" onClick={showPlayerDetails}>
       <div className="Card-container">
