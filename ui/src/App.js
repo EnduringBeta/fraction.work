@@ -47,7 +47,8 @@ const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
           <div>
             <div className="edit-form">
               <label>Player name:</label>
-              <input type="text" value={editedPlayer.player_name} onChange={handleChange}></input>
+              <input name="player_name" type="text" value={editedPlayer.player_name}
+                onChange={handleChange}></input>
             </div>
             <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
           </div>
@@ -120,6 +121,7 @@ function App() {
   const updatePlayer = () => {
     fetch("/players", {
       method: "PUT",
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(playerFocus),
     }).then((res) => res.json()).then((data) => {
         // TODOROSS - update UI?
