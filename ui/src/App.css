@@ -61,15 +61,17 @@
 }
 
 .Card-container {
-  padding: 2px 16px;
+  padding: 16px;
 }
 
 .Player-name {
   font-size: 30px;
+  margin-top: 0;
 }
 
 .Player-position {
   font-size: 24px;
+  margin-top: 0;
 }
 
 .Player-stats {
@@ -77,6 +79,11 @@
   text-align: left;
 }
 
+.Actions-row {
+  text-align: right;
+}
+
 .Player-edit-button {
   padding: 4px;
+  min-width: 50px;
 }

@@ -8,7 +8,8 @@ function Card({ player }) {
     console.log(player)
   };
 
-  const editPlayer = () => {
+  const editPlayer = (event) => {
+    event.stopPropagation();
     console.log("Editing player " + player.player_name)
   };
 
@@ -23,7 +24,9 @@ function Card({ player }) {
           <li>{player.rbi} RBI</li>
           <li>{player.slugging_percent.toFixed(3)} Slugging</li>
         </ul>
-        <button className="Player-edit-button" onClick={editPlayer}>✏️</button>
+        <div className="Actions-row">
+          <button className="Player-edit-button" onClick={editPlayer}>✏️</button>
+        </div>
       </div>
     </div>
   );
