@@ -102,7 +102,7 @@ function App() {
           )}
         </div>
       </header>
-      <Modal id="detail-modal" show={isDetailModalVisible} onClose={toggleDetailModal}>
+      <Modal id="detail-modal" show={isDetailModalVisible} onClose={toggleDetailModal(playerFocus)}>
         {playerFocus ? (
           <div>
             <p>{playerFocus.player_name}</p>
@@ -111,12 +111,12 @@ function App() {
         ) : (<p>No player selected to show details</p>)
         }
       </Modal>
-      <Modal id="edit-modal" show={isEditModalVisible} onClose={toggleEditModal}>
+      <Modal id="edit-modal" show={isEditModalVisible} onClose={toggleEditModal(playerFocus)}>
         {playerFocus ? (
           <div>
             <div className="edit-form">
               <label>Player name:</label>
-              <input type="text" value={player.player_name}></input>
+              <input type="text" value={playerFocus.player_name}></input>
             </div>
             <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
           </div>
