@@ -4,7 +4,7 @@ import './App.css';
 import React, { useState, useEffect } from "react";
 import OpenAI from "openai";
 
-const client = new OpenAI({apiKey: process.env.REACT_APP_OPENAI_API_KEY});
+const client = new OpenAI({apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true});
 
 const DetailModal = ({ show, player, description, loading, onClose }) => {
   if (!show) return null;
