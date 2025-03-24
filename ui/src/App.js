@@ -29,18 +29,21 @@ const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
   if (!show) return null;
 
   const handleChange = (event) => {
+    console.log(event);
+    console.log(editedPlayer);
     setEditedPlayer({ ...editedPlayer, [event.target.name]: event.target.value });
+    console.log(editedPlayer);
   }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>❌</button>
-        {player ? (
+        {editedPlayer ? (
           <div>
             <div className="edit-form">
               <label>Player name:</label>
-              <input type="text" value={player.player_name} onChange={handleChange}></input>
+              <input type="text" value={editedPlayer.player_name} onChange={handleChange}></input>
             </div>
             <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
           </div>
