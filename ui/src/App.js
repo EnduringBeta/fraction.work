@@ -4,7 +4,8 @@ import './App.css';
 import React, { useState, useEffect } from "react";
 import OpenAI from "openai";
 
-const client = new OpenAI({apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true});
+// TODOROSS: use in API
+const client = new OpenAI({apiKey: insecure, dangerouslyAllowBrowser: true});
 
 const DetailModal = ({ show, player, description, loading, onClose }) => {
   if (!show) return null;
@@ -47,12 +48,16 @@ const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
         {editedPlayer ? (
           <div>
             <div className="edit-form">
-              <label>Player name: </label>
-              <input name="player_name" type="text" value={editedPlayer.player_name}
-                onChange={handleChange}></input>
-              <label>Position: </label>
-              <input name="position" type="text" value={editedPlayer.position}
-                onChange={handleChange}></input>
+              <div>
+                <label>Player name: </label>
+                <input name="player_name" type="text" value={editedPlayer.player_name}
+                  onChange={handleChange}></input>
+              </div>
+              <div>
+                <label>Position: </label>
+                <input name="position" type="text" value={editedPlayer.position}
+                  onChange={handleChange}></input>
+              </div>
             </div>
             <button className="save-button" onClick={() => onUpdatePlayer(editedPlayer)}>
               Save changes
@@ -68,8 +73,6 @@ const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
 function Card({ player, onDetail, onEdit }) {
   const showPlayerDetails = () => {
     console.log(player);
-
-    // TODOROSS - https://www.npmjs.com/package/@sumor/llm-connector
     onDetail(player);
   };
 
@@ -115,7 +118,6 @@ function App() {
     setIsEditModalVisible(!isEditModalVisible);
   };
 
-  // TODOROSS HERE
   const openDetailModal = async (player) => {
     setPlayerFocus(player);
     toggleDetailModal();

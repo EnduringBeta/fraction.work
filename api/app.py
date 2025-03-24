@@ -63,7 +63,6 @@ class CleaningCounter:
         print(f"Slugging % cleanings: {self.slugging_cleanings}")
         print(f"On-base & slugging combo cleanings: {self.combo_cleanings}")
 
-
 def get_db_connection():
     connection = mysql.connector.connect(**db_config)
     return connection
