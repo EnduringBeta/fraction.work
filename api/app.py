@@ -135,7 +135,6 @@ def _initialize_db(supply_init_data = False):
         cursor.execute(query_database)
         conn.commit()
 
-        # TODOROSS
         # Create players table if it doesn't exist
         query_players = f"""CREATE TABLE IF NOT EXISTS {table_players} (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -257,12 +256,13 @@ def get_player(player_id):
 
 @app.post("/players")
 def add_player():
+    return jsonify({"error": "Adding players is not implemented"}), 500
     if request.is_json:
         player = request.get_json()
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            # TODOROSS
+            # TODO
             query = f"INSERT INTO {table_players} (name, type) VALUES (%s, %s)"
             player_data = (player['name'], player['type'])
             cursor.execute(query, player_data)
@@ -277,23 +277,68 @@ def add_player():
 
     return jsonify({"error": "Request must be JSON"}), 415
 
+# TODOROSS - test
 @app.route("/players", methods=["PUT"])
 def update_player():
     if request.is_json:
         player = request.get_json()
-        # TODOROSS
-        a_id = player.get('id')
-        a_name = player.get('name')
-        a_type = player.get('type')
 
-        if not a_id or not a_name or not a_type:
+        p_id = player.get('id')
+        p_player_name = player.get('player_name')
+        p_position = player.get('position')
+        p_games = player.get('games')
+        p_at_bat = player.get('at_bat')
+        p_runs = player.get('runs')
+        p_hits = player.get('hits')
+        p_doubles = player.get('doubles')
+        p_triples = player.get('triples')
+        p_home_runs = player.get('home_runs')
+        p_rbi = player.get('rbi')
+        p_walks = player.get('walks')
+        p_strikeouts = player.get('strikeouts')
+        p_stolen_bases = player.get('stolen_bases')
+        p_caught_stealing = player.get('caught_stealing')
+        p_batting_average = player.get('batting_average')
+        p_on_base_percent = player.get('on_base_percent')
+        p_slugging_percent = player.get('slugging_percent')
+        p_on_base_plus_slugging = player.get('on_base_plus_slugging')
+
+        if (not p_id or not p_player_name or not p_position or not p_games or not p_at_bat
+            or not p_runs or not p_hits or not p_doubles or not p_triples or not p_home_runs
+            or not p_rbi or not p_walks or not p_strikeouts or not p_stolen_bases
+            or not p_caught_stealing or not p_batting_average or not p_on_base_percent
+            or not p_slugging_percent or not p_on_base_plus_sluggin):
             return jsonify({"error": "Missing fields"}), 400
 
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            query = f"UPDATE {table_players} SET name = %s, type = %s WHERE id = %s"
-            player_data = (a_name, a_type, a_id)
+            query = f"UPDATE {table_players} SET player_name = %s, position = %s, games = %s, \
+                at_bat = %s, runs = %s, hits = %s, doubles = %s, triples = %s, home_runs = %s, \
+                rbi = %s, walks = %s, strikeouts = %s, stolen_bases = %s, caught_stealing = %s, \
+                batting_average = %s, on_base_percent = %s, slugging_percent = %s, \
+                on_base_plus_slugging = %s, WHERE id = %s"
+            # No ID
+            player_data = (
+                p_player_name,
+                p_position,
+                p_games,
+                p_at_bat,
+                p_runs,
+                p_hits,
+                p_doubles,
+                p_triples,
+                p_home_runs,
+                p_rbi,
+                p_walks,
+                p_strikeouts,
+                p_stolen_bases,
+                p_caught_stealing,
+                p_batting_average,
+                p_on_base_percent,
+                p_slugging_percent,
+                p_on_base_plus_sluggin,
+            )
             cursor.execute(query, player_data)
             conn.commit()
             conn.close()

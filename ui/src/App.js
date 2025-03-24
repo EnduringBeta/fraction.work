@@ -5,11 +5,14 @@ import React, { useState, useEffect } from "react";
 
 function Card({ player }) {
   const showPlayerDetails = () => {
+    // TODOROSS - https://www.npmjs.com/package/react-modal
     console.log(player)
   };
 
   const editPlayer = (event) => {
     event.stopPropagation();
+
+    // TODOROSS - https://www.npmjs.com/package/@sumor/llm-connector
     console.log("Editing player " + player.player_name)
   };
 
