@@ -14,7 +14,7 @@ This uses Docker with Linux, MySQL, Python, and React with JS
 2. Inside the repo directory from step 0, run `docker build -t fraction.work .` to build the Docker image
 3. Run `docker run -d -p 3306:3306 -p 5000:5000 -p 3000:3000 fraction.work` to start the MySQL and Flask server
 
-These can also be run together via `redocker.sh`
+These can also be run together via `redocker.sh` (with the OpenAI API key as an argument)
 
 ### Test server
 
