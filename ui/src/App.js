@@ -9,7 +9,7 @@ const DetailModal = ({ show, player, onClose }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>X</button>
+        <button className="close-button" onClick={onClose}>❌</button>
         {player ? (
           <div>
             <p>{player.player_name}</p>
@@ -22,18 +22,25 @@ const DetailModal = ({ show, player, onClose }) => {
   );
 };
 
+// TODOROSS: exit after update?
 const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
   if (!show) return null;
+
+  const [editedPlayer, setEditedPlayer] = useState(player);
+
+  const handleChange = (event) => {
+    setEditedPlayer({ ...editedPlayer, [event.target.name]: event.target.value });
+  }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>X</button>
+        <button className="close-button" onClick={onClose}>❌</button>
         {player ? (
           <div>
             <div className="edit-form">
               <label>Player name:</label>
-              <input type="text" value={player.player_name}></input>
+              <input type="text" value={player.player_name} onChange={handleChange}></input>
             </div>
             <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
           </div>
