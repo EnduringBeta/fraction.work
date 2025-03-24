@@ -380,12 +380,13 @@ def update_player():
                 p_id,
             )
             cursor.execute(query, player_data)
-            conn.commit()
-            conn.close()
 
             # No data found/changed
             if cursor.rowcount == 0:
                 return jsonify({"error": "Player not found"}), 404
+
+            conn.commit()
+            conn.close()
 
             # Player updated
             return jsonify({"message": "Player updated successfully!"}), 200
@@ -402,11 +403,12 @@ def delete_player(player_id):
         cursor = conn.cursor()
         query = f"DELETE FROM {table_players} WHERE id = %s"
         cursor.execute(query, (player_id,))
-        conn.commit()
-        conn.close()
 
         if cursor.rowcount == 0:
             return jsonify({"error": "Player not found"}), 404
+
+        conn.commit()
+        conn.close()
 
         # Player removed
         return jsonify({"message": "Player deleted successfully!"}), 200

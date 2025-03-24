@@ -50,7 +50,9 @@ const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
               <input name="player_name" type="text" value={editedPlayer.player_name}
                 onChange={handleChange}></input>
             </div>
-            <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
+            <button className="save-button" onClick={() => onUpdatePlayer(editedPlayer)}>
+              Save changes
+            </button>
           </div>
         ) : (<p>No player selected to edit</p>)
         }
@@ -118,13 +120,14 @@ function App() {
     toggleEditModal();
   }
 
-  const updatePlayer = () => {
+  const updatePlayer = (editedPlayer) => {
     fetch("/players", {
       method: "PUT",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(playerFocus),
+      body: JSON.stringify(editedPlayer),
     }).then((res) => res.json()).then((data) => {
         // TODOROSS - update UI?
+        console.log(data);
       });
   };
 
