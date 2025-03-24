@@ -23,7 +23,7 @@ const DetailModal = ({ show, player, description, loading, onClose }) => {
   );
 };
 
-// TODOROSS: add more fields
+// TODO: add more fields
 const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
   const [editedPlayer, setEditedPlayer] = useState(player);
 
