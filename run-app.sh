@@ -10,7 +10,7 @@ service mysql start && mysql -u root -p$MYSQL_PASSWORD < $REPO_DIR/init.sql
 # Activate Python virtual environment, which is assumed to have been set up parallel to repo
 . venv/bin/activate
 
-# .env environment variables are set in Python using `load_dotenv`
+# TODOROSS: pass environment var for OpenAI
 
 # Run the API (in background with "&")!
 # Use host arg for all addresses
