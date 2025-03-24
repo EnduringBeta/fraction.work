@@ -29,6 +29,12 @@ INIT_PLAYERS_URL="https://api.hirefraction.com/api/test/baseball"
 
 SUPPLY_INIT_DATA=True
 
+caught_stealing_cleanings=0
+avg_cleanings=0
+on_base_cleanings=0
+slugging_cleanings=0
+combo_cleanings=0
+
 def get_db_connection():
     connection = mysql.connector.connect(**db_config)
     return connection
@@ -36,6 +42,7 @@ def get_db_connection():
 def _clean_init_player(player):
     if isinstance(player["Caught stealing"], str):
         player["Caught stealing"] = 0
+        caught_stealing_cleanings += 1
 
     player_hits = player["Hits"]
     player_doubles = player["Double (2B)"]
@@ -57,17 +64,29 @@ def _clean_init_player(player):
 
     if player["AVG"] != player_calc_avg:
         player["AVG"] = player_calc_avg
+        avg_cleanings += 1
 
     if player["On-base Percentage"] != player_calc_on_base:
         player["On-base Percentage"] = player_calc_on_base
+        on_base_cleanings += 1
 
     if player["Slugging Percentage"] != player_calc_slugging:
         player["Slugging Percentage"] = player_calc_slugging
+        slugging_cleanings += 1
 
     if player["On-base Plus Slugging"] != player_calc_on_base_plus_slugging:
         player["On-base Plus Slugging"] = player_calc_on_base_plus_slugging
+        combo_cleanings += 1
 
     return player
+
+def _print_cleaning_report():
+    print(f"Cleaning report:")
+    print(f"Caught stealing cleanings: {caught_stealing_cleanings}")
+    print(f"Batting average % cleanings: {avg_cleanings}")
+    print(f"On-base % cleanings: {on_base_cleanings}")
+    print(f"Slugging % cleanings: {slugging_cleanings}")
+    print(f"On-base & slugging combo cleanings: {combo_cleanings}")
 
 def _get_init_player_data():
     try:
@@ -78,6 +97,8 @@ def _get_init_player_data():
         # Clean data
         for player in data:
             _clean_init_player(player)
+
+        _print_cleaning_report()
 
         return data
     except Exception as e:
