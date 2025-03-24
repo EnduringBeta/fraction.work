@@ -3,7 +3,6 @@ import './App.css';
 
 import React, { useState, useEffect } from "react";
 import OpenAI from "openai";
-import 'dotenv/config';
 
 const client = new OpenAI({apiKey: process.env.REACT_APP_OPENAI_API_KEY});
 
