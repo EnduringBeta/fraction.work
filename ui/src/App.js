@@ -22,7 +22,7 @@ const DetailModal = ({ show, player, onClose }) => {
   );
 };
 
-// TODOROSS: exit after update?
+// TODOROSS: add more fields
 const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
   const [editedPlayer, setEditedPlayer] = useState(player);
 
@@ -128,6 +128,7 @@ function App() {
         setPlayers((prevPlayers) =>
           prevPlayers.map((player) => player.id === editedPlayer.id ? editedPlayer : player));
 
+        toggleEditModal();
         setPlayerFocus(null);
       })
       .catch((error) => {
