@@ -5,11 +5,14 @@ Use via `python3 app.py` or `flask run`
 """
 
 import os
+import logging
 import requests
 import mysql.connector
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
+
+logging.basicConfig(filename='flask_app.log', level=logging.DEBUG)
 
 MYSQL_DATABASE=os.environ.get('MYSQL_DATABASE', 'mydatabase')
 MYSQL_USER=os.environ.get('MYSQL_USER', 'myuser')
@@ -283,51 +286,68 @@ def update_player():
     if request.is_json:
         player = request.get_json()
 
-        p_id = player.get('id')
-        p_player_name = player.get('player_name')
-        p_position = player.get('position')
-        p_games = player.get('games')
-        p_at_bat = player.get('at_bat')
-        p_runs = player.get('runs')
-        p_hits = player.get('hits')
-        p_doubles = player.get('doubles')
-        p_triples = player.get('triples')
-        p_home_runs = player.get('home_runs')
-        p_rbi = player.get('rbi')
-        p_walks = player.get('walks')
-        p_strikeouts = player.get('strikeouts')
-        p_stolen_bases = player.get('stolen_bases')
-        p_caught_stealing = player.get('caught_stealing')
-        p_batting_average = player.get('batting_average')
-        p_on_base_percent = player.get('on_base_percent')
-        p_slugging_percent = player.get('slugging_percent')
-        p_on_base_plus_slugging = player.get('on_base_plus_slugging')
-        print(p_id)
-        print(p_player_name)
-        print(p_position)
-        print(p_games)
-        print(p_at_bat)
-        print(p_runs)
-        print(p_hits)
-        print(p_doubles)
-        print(p_triples)
-        print(p_home_runs)
-        print(p_rbi)
-        print(p_walks)
-        print(p_strikeouts)
-        print(p_stolen_bases)
-        print(p_caught_stealing)
-        print(p_batting_average)
-        print(p_on_base_percent)
-        print(p_slugging_percent)
-        print(p_on_base_plus_slugging)
+        missing_fields = []
 
-        if (not p_id or not p_player_name or not p_position or not p_games or not p_at_bat
-            or not p_runs or not p_hits or not p_doubles or not p_triples or not p_home_runs
-            or not p_rbi or not p_walks or not p_strikeouts or not p_stolen_bases
-            or not p_caught_stealing or not p_batting_average or not p_on_base_percent
-            or not p_slugging_percent or not p_on_base_plus_slugging):
-            return jsonify({"error": "Missing fields"}), 400
+        p_id = player.get('id')
+        if not p_id:
+            missing_fields.append('id')
+        p_player_name = player.get('player_name')
+        if not p_player_name:
+            missing_fields.append('player_name')
+        p_position = player.get('position')
+        if not p_position:
+            missing_fields.append('position')
+        p_games = player.get('games')
+        if not p_games:
+            missing_fields.append('games')
+        p_at_bat = player.get('at_bat')
+        if not p_at_bat:
+            missing_fields.append('at_bat')
+        p_runs = player.get('runs')
+        if not p_runs:
+            missing_fields.append('runs')
+        p_hits = player.get('hits')
+        if not p_hits:
+            missing_fields.append('hits')
+        p_doubles = player.get('doubles')
+        if not p_doubles:
+            missing_fields.append('doubles')
+        p_triples = player.get('triples')
+        if not p_triples:
+            missing_fields.append('triples')
+        p_home_runs = player.get('home_runs')
+        if not p_home_runs:
+            missing_fields.append('home_runs')
+        p_rbi = player.get('rbi')
+        if not p_rbi:
+            missing_fields.append('rbi')
+        p_walks = player.get('walks')
+        if not p_walks:
+            missing_fields.append('walks')
+        p_strikeouts = player.get('strikeouts')
+        if not p_strikeouts:
+            missing_fields.append('strikeouts')
+        p_stolen_bases = player.get('stolen_bases')
+        if not p_stolen_bases:
+            missing_fields.append('stolen_bases')
+        p_caught_stealing = player.get('caught_stealing')
+        if not p_caught_stealing:
+            missing_fields.append('caught_stealing')
+        p_batting_average = player.get('batting_average')
+        if not p_batting_average:
+            missing_fields.append('batting_average')
+        p_on_base_percent = player.get('on_base_percent')
+        if not p_on_base_percent:
+            missing_fields.append('on_base_percent')
+        p_slugging_percent = player.get('slugging_percent')
+        if not p_slugging_percent:
+            missing_fields.append('slugging_percent')
+        p_on_base_plus_slugging = player.get('on_base_plus_slugging')
+        if not p_on_base_plus_slugging:
+            missing_fields.append('on_base_plus_slugging')
+
+        if missing_fields:
+            return jsonify({"error": f"Missing fields: {', '.join(missing_fields)}"}), 400
 
         try:
             conn = get_db_connection()
@@ -336,7 +356,7 @@ def update_player():
                 at_bat = %s, runs = %s, hits = %s, doubles = %s, triples = %s, home_runs = %s, \
                 rbi = %s, walks = %s, strikeouts = %s, stolen_bases = %s, caught_stealing = %s, \
                 batting_average = %s, on_base_percent = %s, slugging_percent = %s, \
-                on_base_plus_slugging = %s, WHERE id = %s"
+                on_base_plus_slugging = %s WHERE id = %s"
             # No ID
             player_data = (
                 p_player_name,
@@ -357,6 +377,7 @@ def update_player():
                 p_on_base_percent,
                 p_slugging_percent,
                 p_on_base_plus_slugging,
+                p_id,
             )
             cursor.execute(query, player_data)
             conn.commit()
@@ -367,7 +388,7 @@ def update_player():
                 return jsonify({"error": "Player not found"}), 404
 
             # Player updated
-            return jsonify({"message": "Player updated successfully!"}), 500
+            return jsonify({"message": "Player updated successfully!"}), 200
 
         except Exception as e:
             return jsonify({"error": str(e)}), 500
@@ -394,4 +415,4 @@ def delete_player(player_id):
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
