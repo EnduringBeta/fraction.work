@@ -125,3 +125,9 @@
 .close-button:hover {
   background-color: darkred;
 }
+
+.save-button {
+  text-align: right;
+  padding: 4px;
+  min-width: 50px;
+}

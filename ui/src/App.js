@@ -113,11 +113,13 @@ function App() {
       </Modal>
       <Modal id="edit-modal" show={isEditModalVisible} onClose={toggleEditModal}>
         {playerFocus ? (
-          <div className="edit-form">
-            <label>Player name:</label>
-            <input type="text" value={player.player_name}></input>
+          <div>
+            <div className="edit-form">
+              <label>Player name:</label>
+              <input type="text" value={player.player_name}></input>
+            </div>
+            <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
           </div>
-          <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
         ) : (<p>No player selected to edit</p>)
         }
       </Modal>

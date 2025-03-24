@@ -307,7 +307,7 @@ def update_player():
             or not p_runs or not p_hits or not p_doubles or not p_triples or not p_home_runs
             or not p_rbi or not p_walks or not p_strikeouts or not p_stolen_bases
             or not p_caught_stealing or not p_batting_average or not p_on_base_percent
-            or not p_slugging_percent or not p_on_base_plus_sluggin):
+            or not p_slugging_percent or not p_on_base_plus_slugging):
             return jsonify({"error": "Missing fields"}), 400
 
         try:
@@ -337,7 +337,7 @@ def update_player():
                 p_batting_average,
                 p_on_base_percent,
                 p_slugging_percent,
-                p_on_base_plus_sluggin,
+                p_on_base_plus_slugging,
             )
             cursor.execute(query, player_data)
             conn.commit()
