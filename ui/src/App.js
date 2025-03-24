@@ -3,14 +3,42 @@ import './App.css';
 
 import React, { useState, useEffect } from "react";
 
-const Modal = ({ show, onClose, children }) => {
+const DetailModal = ({ show, player, onClose }) => {
   if (!show) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>X</button>
-        {children}
+        {player ? (
+          <div>
+            <p>{player.player_name}</p>
+            <p>RUN LLM HERE</p>
+          </div>
+        ) : (<p>No player selected to show details</p>)
+        }
+      </div>
+    </div>
+  );
+};
+
+const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
+  if (!show) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <button className="close-button" onClick={onClose}>X</button>
+        {player ? (
+          <div>
+            <div className="edit-form">
+              <label>Player name:</label>
+              <input type="text" value={player.player_name}></input>
+            </div>
+            <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
+          </div>
+        ) : (<p>No player selected to edit</p>)
+        }
       </div>
     </div>
   );
@@ -18,16 +46,16 @@ const Modal = ({ show, onClose, children }) => {
 
 function Card({ player, onDetail, onEdit }) {
   const showPlayerDetails = () => {
-    // TODOROSS - https://www.npmjs.com/package/react-modal
     console.log(player);
+
     onDetail(player);
   };
 
   const editPlayer = (event) => {
     event.stopPropagation();
+    console.log("Editing player " + player.player_name);
 
     // TODOROSS - https://www.npmjs.com/package/@sumor/llm-connector
-    console.log("Editing player " + player.player_name);
     onEdit(player);
   };
 
@@ -59,19 +87,10 @@ function App() {
 
   const toggleDetailModal = () => {
     setIsDetailModalVisible(!isDetailModalVisible);
-
-    // TODOROSS: confirm these work
-    if (!isDetailModalVisible) {
-      setPlayerFocus(null);
-    }
   };
 
   const toggleEditModal = () => {
     setIsEditModalVisible(!isEditModalVisible);
-
-    if (!isEditModalVisible) {
-      setPlayerFocus(null);
-    }
   };
 
   const openDetailModal = (player) => {
@@ -84,7 +103,7 @@ function App() {
     toggleEditModal();
   }
 
-  const onUpdatePlayer = () => {
+  const updatePlayer = () => {
     fetch("/players", {
       method: "PUT",
       body: JSON.stringify(playerFocus),
@@ -111,27 +130,10 @@ function App() {
           )}
         </div>
       </header>
-      <Modal id="detail-modal" show={isDetailModalVisible} onClose={toggleDetailModal}>
-        {playerFocus ? (
-          <div>
-            <p>{playerFocus.player_name}</p>
-            <p>RUN LLM HERE</p>
-          </div>
-        ) : (<p>No player selected to show details</p>)
-        }
-      </Modal>
-      <Modal id="edit-modal" show={isEditModalVisible} onClose={toggleEditModal}>
-        {playerFocus ? (
-          <div>
-            <div className="edit-form">
-              <label>Player name:</label>
-              <input type="text" value={playerFocus.player_name}></input>
-            </div>
-            <button className="save-button" onClick={onUpdatePlayer}>Save changes</button>
-          </div>
-        ) : (<p>No player selected to edit</p>)
-        }
-      </Modal>
+      <DetailModal id="detail-modal" show={isDetailModalVisible} player={playerFocus}
+        onClose={toggleDetailModal} />
+      <EditModal id="edit-modal" show={isEditModalVisible} player={playerFocus}
+        onUpdatePlayer={updatePlayer} onClose={toggleEditModal} />
     </div>
   );
 }
