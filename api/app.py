@@ -429,7 +429,7 @@ def get_description(player_id):
         cursor = conn.cursor(dictionary=True)
         query = f"""
             SELECT player_name, games, batting_average, rbi, slugging_percent, position
-            FROM {table_players} WHERE id = %s"
+            FROM {table_players} WHERE id = %s
         """
         cursor.execute(query, (player_id,))
         player = cursor.fetchone()
