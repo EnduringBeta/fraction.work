@@ -6,11 +6,19 @@ Use via `python3 app.py` or `flask run`
 
 import os
 import logging
+import time
 import requests
 import mysql.connector
 from flask import Flask, request, jsonify
+from openai import OpenAI
 
 app = Flask(__name__)
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+client = OpenAI(
+    # This is the default and can be omitted
+    api_key=OPENAI_API_KEY,
+)
 
 logging.basicConfig(filename='flask_app.log', level=logging.DEBUG)
 
@@ -410,6 +418,37 @@ def delete_player(player_id):
 
         # Player removed
         return jsonify({"message": "Player deleted successfully!"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/players/description/<int:player_id>", methods=["GET"])
+def get_description(player_id):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = f"SELECT player_name, position FROM {table_players} WHERE id = %s"
+        cursor.execute(query, (player_id,))
+        player = cursor.fetchone()
+        conn.close()
+
+        if not player:
+            return jsonify({"error": "Player not found"}), 404
+
+        # Rudimentary rate limiting
+        time.sleep(1)
+
+        # Get player description from OpenAI
+        response = client.responses.create(
+            model="gpt-3.5-turbo",
+            instructions="You're a major league baseball announcer of 25 years.",
+            input=f"Explain the record of baseball player {player.player_name} given these stats: "
+                f"{player.games} games, {round(player.batting_average, 3):.3f} batting average, "
+                f"{player.rbi} RBI, {round(player.slugging_percent, 3):.3f} slugging percent, "
+                f"and {player.position} position."
+        )
+
+        return jsonify({"message": response.output_text}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
