@@ -24,9 +24,9 @@ const DetailModal = ({ show, player, onClose }) => {
 
 // TODOROSS: exit after update?
 const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
-  if (!show) return null;
-
   const [editedPlayer, setEditedPlayer] = useState(player);
+
+  if (!show) return null;
 
   const handleChange = (event) => {
     setEditedPlayer({ ...editedPlayer, [event.target.name]: event.target.value });
