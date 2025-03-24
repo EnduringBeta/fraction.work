@@ -32,6 +32,9 @@ WORKDIR /app
 # Get repo
 RUN git clone https://github.com/EnduringBeta/fraction.work.git
 
+# Assumes .env file exists (should have OpenAI API key)
+COPY .env $REPO_DIR/ui/.env
+
 # Use Python virtual environment to install and use project dependencies
 RUN python3 -m venv venv && \
     . venv/bin/activate && \
