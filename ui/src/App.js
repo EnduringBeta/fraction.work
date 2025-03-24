@@ -48,8 +48,11 @@ const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
         {editedPlayer ? (
           <div>
             <div className="edit-form">
-              <label>Player name:</label>
+              <label>Player name: </label>
               <input name="player_name" type="text" value={editedPlayer.player_name}
+                onChange={handleChange}></input>
+              <label>Position: </label>
+              <input name="position" type="text" value={editedPlayer.position}
                 onChange={handleChange}></input>
             </div>
             <button className="save-button" onClick={() => onUpdatePlayer(editedPlayer)}>
