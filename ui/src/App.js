@@ -33,10 +33,7 @@ const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
   if (!show) return null;
 
   const handleChange = (event) => {
-    console.log(event);
-    console.log(editedPlayer);
     setEditedPlayer({ ...editedPlayer, [event.target.name]: event.target.value });
-    console.log(editedPlayer);
   }
 
   return (
@@ -65,14 +62,13 @@ function Card({ player, onDetail, onEdit }) {
   const showPlayerDetails = () => {
     console.log(player);
 
+    // TODOROSS - https://www.npmjs.com/package/@sumor/llm-connector
     onDetail(player);
   };
 
   const editPlayer = (event) => {
     event.stopPropagation();
     console.log("Editing player " + player.player_name);
-
-    // TODOROSS - https://www.npmjs.com/package/@sumor/llm-connector
     onEdit(player);
   };
 
@@ -126,8 +122,16 @@ function App() {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(editedPlayer),
     }).then((res) => res.json()).then((data) => {
-        // TODOROSS - update UI?
         console.log(data);
+
+        // Update the player in the list
+        setPlayers((prevPlayers) =>
+          prevPlayers.map((player) => player.id === editedPlayer.id ? editedPlayer : player));
+
+        setPlayerFocus(null);
+      })
+      .catch((error) => {
+        console.error("Error updating player: ", error);
       });
   };
 
