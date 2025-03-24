@@ -4,9 +4,6 @@ import './App.css';
 import React, { useState, useEffect } from "react";
 import OpenAI from "openai";
 
-// TODOROSS: use in API
-const client = new OpenAI({apiKey: insecure, dangerouslyAllowBrowser: true});
-
 const DetailModal = ({ show, player, description, loading, onClose }) => {
   if (!show) return null;
 
@@ -132,21 +129,10 @@ function App() {
   const getPlayerDescription = async (player) => {
     setLoading(true);
     try {
-      const completion = await client.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: "You're a major league baseball announcer of 25 years. "
-              + "Explain the record of baseball player " + player.player_name + " given these stats: "
-              + player.games + " games, " + player.batting_average.toFixed(3) + " batting average, "
-              + player.rbi + " RBI, " + player.slugging_percent.toFixed(3) + " slugging percent; "
-              + "and " + player.position + " position."
-          },
-        ],
+      fetch("/players/describe/" + player.id).then((res) => res.json()).then((data) => {
+        console.log(data);
+        setPlayerDescription(data.description);
       });
-      console.log(completion);
-      setPlayerDescription(completion.choices[0].message.content);
     } catch (error) {
       console.error("Error getting player description: ", error);
     } finally {
