@@ -33,11 +33,52 @@ def get_db_connection():
     connection = mysql.connector.connect(**db_config)
     return connection
 
+def _clean_init_player(player):
+    if isinstance(player["Caught stealing"], str):
+        player["Caught stealing"] = 0
+
+    player_hits = player["Hits"]
+    player_doubles = player["Double (2B)"]
+    player_triples = player["third baseman"]
+    player_home_runs = player["home run"]
+    player_at_bat = player["At-bat"]
+
+    player_calc_avg = player_hits / player_at_bat
+
+    # https://en.wikipedia.org/wiki/List_of_Major_League_Baseball_career_on-base_percentage_leaders
+    player_calc_on_base = (player_hits + player["a walk"]) / (player_at_bat + player["a walk"])
+
+    # https://en.wikipedia.org/wiki/Slugging_percentage
+    player_calc_singles = player_hits - player_doubles - player_triples - player_home_runs
+    player_calc_slugging = (player_calc_singles + 2*player_doubles
+        + 3*player_triples + 4*player_home_runs) / player_at_bat
+
+    player_calc_on_base_plus_slugging = player_calc_on_base + player_calc_slugging
+
+    if player["AVG"] != player_calc_avg:
+        player["AVG"] = player_calc_avg
+
+    if player["On-base Percentage"] != player_calc_on_base:
+        player["On-base Percentage"] = player_calc_on_base
+
+    if player["Slugging Percentage"] != player_calc_slugging:
+        player["Slugging Percentage"] = player_calc_slugging
+
+    if player["On-base Plus Slugging"] != player_calc_on_base_plus_slugging:
+        player["On-base Plus Slugging"] = player_calc_on_base_plus_slugging
+
+    return player
+
 def _get_init_player_data():
     try:
         response = requests.get(INIT_PLAYERS_URL)
         response.raise_for_status()
         data = response.json()
+
+        # Clean data
+        for player in data:
+            _clean_init_player(player)
+
         return data
     except Exception as e:
         print(f"Error getting initial player data: {e}")
