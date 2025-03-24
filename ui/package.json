@@ -9,8 +9,6 @@
     "@testing-library/user-event": "^13.5.0",
     "dotenv": "^16.4.7",
     "openai": "^4.89.0",
-    "os": "^0.1.2",
-    "path": "^0.12.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-scripts": "5.0.1",
@@ -39,6 +37,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "browser": {
+    "path": false,
+    "os": false,
+    "crypto": false
   },
   "proxy": "http://127.0.0.1:5000"
 }
