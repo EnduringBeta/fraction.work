@@ -16,11 +16,12 @@ const Modal = ({ show, onClose, children }) => {
   );
 };
 
-function Card({ player }) {
+function Card({ player, onDetail, onEdit }) {
   const showPlayerDetails = () => {
     // TODOROSS - https://www.npmjs.com/package/react-modal
     console.log(player);
-    toggleDetailModal(player);
+    setPlayerFocus(player);
+    onDetail();
   };
 
   const editPlayer = (event) => {
@@ -28,7 +29,8 @@ function Card({ player }) {
 
     // TODOROSS - https://www.npmjs.com/package/@sumor/llm-connector
     console.log("Editing player " + player.player_name);
-    toggleEditModal(player);
+    setPlayerFocus(player);
+    onEdit();
   };
 
   return (
@@ -57,8 +59,7 @@ function App() {
   const [players, setPlayers] = useState([]);
   const [playerFocus, setPlayerFocus] = useState(null);
 
-  const toggleDetailModal = (player) => {
-    setPlayerFocus(player);
+  const toggleDetailModal = () => {
     setIsDetailModalVisible(!isDetailModalVisible);
 
     // TODOROSS: confirm these work
@@ -67,8 +68,7 @@ function App() {
     }
   };
 
-  const toggleEditModal = (player) => {
-    setPlayerFocus(player);
+  const toggleEditModal = () => {
     setIsEditModalVisible(!isEditModalVisible);
 
     if (!isEditModalVisible) {
@@ -98,7 +98,7 @@ function App() {
         <h1>Fraction.Work - ⚾ Players</h1>
         <div className="Players">
           {players.map((item, index) =>
-            <Card key={index} player={item} />
+            <Card key={index} player={item} onDetail={toggleDetailModal} onEdit={toggleEditModal} />
           )}
         </div>
       </header>
