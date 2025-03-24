@@ -3,19 +3,22 @@ import './App.css';
 
 import React, { useState, useEffect } from "react";
 
-const DetailModal = ({ show, player, onClose }) => {
+const client = new OpenAI();
+
+const DetailModal = ({ show, player, description, loading, onClose }) => {
   if (!show) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>❌</button>
-        {player ? (
-          <div>
-            <p>{player.player_name}</p>
-            <p>RUN LLM HERE</p>
-          </div>
-        ) : (<p>No player selected to show details</p>)
+        {loading ? (<p>Loading player details...</p>)
+          : player ? (
+            <div>
+              <p>{player.player_name}</p>
+              <p>{description}</p>
+            </div>
+          ) : (<p>No player selected to show details</p>)
         }
       </div>
     </div>
@@ -97,6 +100,8 @@ function App() {
 
   const [players, setPlayers] = useState([]);
   const [playerFocus, setPlayerFocus] = useState(null);
+  const [playerDescription, setPlayerDescription] = useState("Awaiting baseball player details...");
+  const [loading, setLoading] = useState(false);
 
   const toggleDetailModal = () => {
     setIsDetailModalVisible(!isDetailModalVisible);
@@ -106,15 +111,42 @@ function App() {
     setIsEditModalVisible(!isEditModalVisible);
   };
 
-  const openDetailModal = (player) => {
+  // TODOROSS HERE
+  const openDetailModal = async (player) => {
     setPlayerFocus(player);
     toggleDetailModal();
+    await getPlayerDescription(player);
   }
 
   const openEditModal = (player) => {
     setPlayerFocus(player);
     toggleEditModal();
   }
+
+  const getPlayerDescription = async (player) => {
+    setLoading(true);
+    try {
+      const completion = await client.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "user",
+            content: "You're a major league baseball announcer of 25 years. "
+              + "Explain the record of baseball player " + player.player_name + " given these stats: "
+              + player.games + " games, " + player.batting_average.toFixed(3) + " batting average, "
+              + player.rbi + " RBI, " + player.slugging_percent.toFixed(3) + " slugging percent; "
+              + "and " + player.position + " position."
+          },
+        ],
+      });
+      console.log(completion);
+      setPlayerDescription(completion.choices[0].message.content);
+    } catch (error) {
+      console.error("Error getting player description: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updatePlayer = (editedPlayer) => {
     fetch("/players", {
@@ -155,7 +187,7 @@ function App() {
         </div>
       </header>
       <DetailModal id="detail-modal" show={isDetailModalVisible} player={playerFocus}
-        onClose={toggleDetailModal} />
+        description={playerDescription} loading={loading} onClose={toggleDetailModal} />
       <EditModal id="edit-modal" show={isEditModalVisible} player={playerFocus}
         onUpdatePlayer={updatePlayer} onClose={toggleEditModal} />
     </div>
