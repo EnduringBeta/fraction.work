@@ -60,10 +60,23 @@
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
-.Container {
+.Card-container {
   padding: 2px 16px;
 }
 
-.Stats {
+.Player-name {
+  font-size: 30px;
+}
+
+.Player-position {
+  font-size: 24px;
+}
+
+.Player-stats {
+  font-size: 18px;
   text-align: left;
+}
+
+.Player-edit-button {
+  padding: 4px;
 }

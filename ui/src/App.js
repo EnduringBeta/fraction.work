@@ -4,17 +4,26 @@ import './App.css';
 import React, { useState, useEffect } from "react";
 
 function Card({ player }) {
+  const showPlayerDetails = () => {
+    console.log(player)
+  };
+
+  const editPlayer = () => {
+    console.log("Editing player " + player.player_name)
+  };
+
   return (
-    <div id={`player-${player.id}`} className="Card">
-      <div className="Container">
-        <h2>{player.player_name}</h2>
-        <p>{player.position}</p>
-        <ul className="Stats">
+    <div id={`player-${player.id}`} className="Card" onClick={showPlayerDetails}>
+      <div className="Card-container">
+        <p className="Player-name">{player.player_name}</p>
+        <p className="Player-position">{player.position}</p>
+        <ul className="Player-stats">
           <li>{player.games} Games</li>
           <li>{player.batting_average.toFixed(3)} AVG</li>
           <li>{player.rbi} RBI</li>
           <li>{player.slugging_percent.toFixed(3)} Slugging</li>
         </ul>
+        <button className="Player-edit-button" onClick={editPlayer}>✏️</button>
       </div>
     </div>
   );
