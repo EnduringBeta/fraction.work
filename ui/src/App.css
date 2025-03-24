@@ -63,3 +63,7 @@
 .Container {
   padding: 2px 16px;
 }
+
+.Stats {
+  text-align: left;
+}
