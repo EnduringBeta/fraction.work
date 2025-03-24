@@ -280,7 +280,6 @@ def add_player():
 
     return jsonify({"error": "Request must be JSON"}), 415
 
-# TODOROSS - test
 @app.route("/players", methods=["PUT"])
 def update_player():
     if request.is_json:
