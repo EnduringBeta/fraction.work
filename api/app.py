@@ -442,10 +442,10 @@ def get_description(player_id):
         response = client.responses.create(
             model="gpt-3.5-turbo",
             instructions="You're a major league baseball announcer of 25 years.",
-            input=f"Explain the record of baseball player {player.player_name} given these stats: "
-                f"{player.games} games, {round(player.batting_average, 3):.3f} batting average, "
-                f"{player.rbi} RBI, {round(player.slugging_percent, 3):.3f} slugging percent, "
-                f"and {player.position} position."
+            input=f"Explain the record of baseball player {player["player_name"]} given these stats: "
+                f"{player["games"]} games, {round(player["batting_average"], 3):.3f} batting average, "
+                f"{player["rbi"]} RBI, {round(player["slugging_percent"], 3):.3f} slugging percent, "
+                f"and {player["position"]} position."
         )
 
         return jsonify({"message": response.output_text}), 200
