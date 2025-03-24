@@ -88,6 +88,7 @@ function Card({ player, onDetail, onEdit }) {
           <li>{player.batting_average.toFixed(3)} AVG</li>
           <li>{player.rbi} RBI</li>
           <li>{player.slugging_percent.toFixed(3)} Slugging</li>
+          <li>{(player.hits / player.games).toFixed(3)} Hits Per Game</li>
         </ul>
         <div className="Actions-row">
           <button className="Player-edit-button" onClick={editPlayer}>✏️</button>
