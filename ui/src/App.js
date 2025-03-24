@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import OpenAI from "openai";
 import 'dotenv/config';
 
-const client = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
+const client = new OpenAI({apiKey: process.env.REACT_APP_OPENAI_API_KEY});
 
 const DetailModal = ({ show, player, description, loading, onClose }) => {
   if (!show) return null;
