@@ -26,6 +26,10 @@ const DetailModal = ({ show, player, onClose }) => {
 const EditModal = ({ show, player, onUpdatePlayer, onClose }) => {
   const [editedPlayer, setEditedPlayer] = useState(player);
 
+  useEffect(() => {
+    setEditedPlayer(player);
+  }, [player]);
+
   if (!show) return null;
 
   const handleChange = (event) => {
