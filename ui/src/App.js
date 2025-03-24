@@ -106,7 +106,8 @@ function App() {
         <h1>Fraction.Work - ⚾ Players</h1>
         <div className="Players">
           {players.map((item, index) =>
-            <Card key={index} player={item} onDetail={openDetailModal} onEdit={openEditModal} />
+            <Card key={index} player={item} onDetail={() => openDetailModal(item)}
+              onEdit={() => openEditModal(item)} />
           )}
         </div>
       </header>
