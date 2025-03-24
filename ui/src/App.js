@@ -20,8 +20,7 @@ function Card({ player, onDetail, onEdit }) {
   const showPlayerDetails = () => {
     // TODOROSS - https://www.npmjs.com/package/react-modal
     console.log(player);
-    setPlayerFocus(player);
-    onDetail();
+    onDetail(player);
   };
 
   const editPlayer = (event) => {
@@ -29,8 +28,7 @@ function Card({ player, onDetail, onEdit }) {
 
     // TODOROSS - https://www.npmjs.com/package/@sumor/llm-connector
     console.log("Editing player " + player.player_name);
-    setPlayerFocus(player);
-    onEdit();
+    onEdit(player);
   };
 
   return (
@@ -76,6 +74,16 @@ function App() {
     }
   };
 
+  const openDetailModal = (player) => {
+    setPlayerFocus(player);
+    toggleDetailModal();
+  }
+
+  const openEditModal = (player) => {
+    setPlayerFocus(player);
+    toggleEditModal();
+  }
+
   const onUpdatePlayer = () => {
     fetch("/players", {
       method: "PUT",
@@ -98,7 +106,7 @@ function App() {
         <h1>Fraction.Work - ⚾ Players</h1>
         <div className="Players">
           {players.map((item, index) =>
-            <Card key={index} player={item} onDetail={toggleDetailModal} onEdit={toggleEditModal} />
+            <Card key={index} player={item} onDetail={openDetailModal} onEdit={openEditModal} />
           )}
         </div>
       </header>
