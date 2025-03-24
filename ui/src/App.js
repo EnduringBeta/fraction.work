@@ -129,7 +129,7 @@ function App() {
   const getPlayerDescription = async (player) => {
     setLoading(true);
     try {
-      fetch("/players/describe/" + player.id).then((res) => res.json()).then((data) => {
+      fetch("/players/description/" + player.id).then((res) => res.json()).then((data) => {
         console.log(data);
         setPlayerDescription(data.description);
       });
